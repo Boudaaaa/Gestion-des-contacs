@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'pages/edit_contact_page.dart';
 import 'pages/login_page.dart';
 import 'services/auth_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -176,6 +177,49 @@ class _ContactsHomePageState extends State<ContactsHomePage> {
       appBar: AppBar(
         title: const Text('Gestion des contacts'),
         actions: [
+          IconButton(
+            tooltip: 'À propos',
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('À propos'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Gestion des contacts'),
+                      const SizedBox(height: 16),
+                      const Text('Lien du compte GitHub:'),
+                      const SizedBox(height: 8),
+                      InkWell(
+                        onTap: () async {
+                          final uri = Uri.parse('https://github.com/Boudaaaa/Gestion-des-contacs');
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri, mode: LaunchMode.externalApplication);
+                          }
+                        },
+                        child: const Text(
+                          'https://github.com/Boudaaaa/Gestion-des-contacs',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Fermer'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           IconButton(
             tooltip: 'Déconnexion',
             icon: const Icon(Icons.logout),
